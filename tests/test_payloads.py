@@ -39,7 +39,7 @@ def test_canvas_payload_has_window_data() -> None:
     payload = build_canvas_payload(line1="周一周一", line2="奄奄一息",
                                    meme_uri="data:image/png;base64,AAAA")
     assert "windowData" in payload
-    assert payload["taskAlias"] == "打工人每周提醒"
+    assert payload["taskAlias"] == "打工人周历"
     assert "image" not in payload
 
 

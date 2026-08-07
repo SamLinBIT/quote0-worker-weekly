@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # ============================================================
-# 打工人每周提醒 — cron 入口（uv 版 wrapper）
+# 打工人周历 — cron 入口（uv 版 wrapper）
 #
 # Secrets are read from .env in the script directory.
 # 依赖: uv（curl -LsSf https://astral.sh/uv/install.sh | sh）

@@ -1,4 +1,4 @@
-"""打工人每周提醒 CLI 编排入口.
+"""打工人周历 CLI 编排入口.
 
 用法:
     uv run python -m laborer_reminder.main               # 推送当天卡片（默认 Image API 整卡 PNG）
@@ -134,7 +134,7 @@ def _push(payload: dict, config) -> int:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="打工人每周提醒 — 推送当天卡片到 Dot Quote/0")
+    parser = argparse.ArgumentParser(description="打工人周历 — 推送当天卡片到 Dot Quote/0")
     parser.add_argument("--api", choices=["canvas", "image"], default=None,
                         help="推送模式，覆盖 .env PUSH_MODE（默认 image）")
     parser.add_argument("--day", default=None, help="指定周几（0-6 或 周一~周日），默认今天")

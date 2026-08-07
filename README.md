@@ -1,4 +1,4 @@
-# quote0-laborer-weekly — 打工人每周提醒
+# quote0-worker-weekly — 打工人周历
 
 每天清晨往 MindReset Dot Quote/0 电子墨水屏（296×152 黑白）推一张"打工人精神状态"卡片。
 

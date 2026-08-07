@@ -71,7 +71,7 @@ def render_treatment_compare(weekday: int = 0, meme_mode: str = "random") -> Non
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="渲染打工人提醒设计样式预览图")
+    parser = argparse.ArgumentParser(description="渲染打工人周历设计样式预览图")
     parser.add_argument("--treatment", choices=["fs", "bw", "4level"], default="bw",
                         help="表情包二值化方式 (默认 bw 硬阈值)")
     parser.add_argument("--meme-mode", choices=["fixed", "random"], default="random",

@@ -1,7 +1,7 @@
 [project]
-name = "laborer-weekly-reminder"
+name = "quote0-worker-weekly"
 version = "0.1.0"
-description = "打工人每周提醒 — MindReset Dot Quote/0 e-ink daily card"
+description = "打工人周历 — MindReset Dot Quote/0 e-ink daily card"
 requires-python = ">=3.10"
 dependencies = ["pillow>=10.0.0"]
 

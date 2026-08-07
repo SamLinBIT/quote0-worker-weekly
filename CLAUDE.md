@@ -1,6 +1,6 @@
-# CLAUDE.md — quote0-laborer-weekly
+# CLAUDE.md — quote0-worker-weekly
 
-打工人每周提醒：每天 7:05 北京时间向 MindReset Dot Quote/0（296×152 黑白墨水屏）推送当日卡片。
+打工人周历：每天 7:05 北京时间向 MindReset Dot Quote/0（296×152 黑白墨水屏）推送当日卡片。
 
 ## 架构
 
@@ -38,6 +38,6 @@ uv run python tools/render_preview.py --scale 4               # 放大预览
 ## 注意事项
 
 - `.env` 有真实密钥（DOT_API_KEY/DOT_DEVICE_ID），勿提交/勿外传；PUSH_MODE / TREATMENT 也在里面。
-- `taskAlias` 为"打工人每周提醒"，与参考项目的 "DeepSeek Balance" 区分。
+- `taskAlias` 为"打工人周历"，与参考项目的 "DeepSeek Balance" 区分。
 - 改布局时同时改 `render_card.py`（Pillow 坐标）和 `layout.py`（tailwind 类），再 `--dry-run` 验证。
 - 真推一次看设备实物为准：预览加粗为 stroke 模拟，设备端 `font-bold` 是真渲染。

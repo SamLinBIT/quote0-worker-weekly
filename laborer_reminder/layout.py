@@ -1,7 +1,7 @@
 """Canvas API windowData JSON builder for 296x152 e-ink screen.
 
 基于参考项目 quote0-deepseek-balance/deepseek_balance/layout.py 的
-_element() DSL 与 payload 结构，改为打工人提醒卡片：
+_element() DSL 与 payload 结构，改为打工人周历卡片：
 垂直三段式 — 顶部 12 个月进度圆点 / 中部左表情包右两行大字 / 底部日期假期小字。
 
 上下边距各 8px（px-[4px] py-[8px]）；表情包保持 112 不变：
@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import Any
 
-TASK_ALIAS = "打工人每周提醒"
+TASK_ALIAS = "打工人周历"
 
 
 def _element(
@@ -179,7 +179,7 @@ def _build_error_payload(error_message: str) -> dict[str, Any]:
                 children=[
                     _element("div",
                         tw="text-18-chillksans font-bold",
-                        children="✗ 打工人提醒 出错了",
+                        children="✗ 打工人周历 出错了",
                     ),
                     _element("div",
                         tw="text-14-chillksans",
