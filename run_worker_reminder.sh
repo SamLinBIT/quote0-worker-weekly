@@ -31,13 +31,13 @@ export PATH="${HOME}/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
 mkdir -p logs
 
 # flock 防重入：手动 + cron 重叠时后到者直接退出，避免重复推送
-exec 9>"${SCRIPT_DIR}/logs/laborer.lock"
+exec 9>"${SCRIPT_DIR}/logs/worker.lock"
 flock -n 9 || { echo "[$(date '+%F %T %Z')] 已有实例在运行，本次跳过" >&2; exit 1; }
 
 # 日志按日轮转
-LOG_FILE="${SCRIPT_DIR}/logs/laborer_$(date +%F).log"
-echo "[$(date '+%F %T %Z')] run_laborer_reminder.sh $*" \
+LOG_FILE="${SCRIPT_DIR}/logs/worker_$(date +%F).log"
+echo "[$(date '+%F %T %Z')] run_worker_reminder.sh $*" \
     | tee -a "${LOG_FILE}"
 # --frozen：锁文件已在仓库内，不联网拉取/解析，离线 cron 也稳
-uv run --frozen python -m laborer_reminder.main "$@" 2>&1 \
+uv run --frozen python -m worker_reminder.main "$@" 2>&1 \
     | tee -a "${LOG_FILE}"

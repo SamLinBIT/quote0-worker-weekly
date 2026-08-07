@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from laborer_reminder.config import _load_env_file, _parse_env_line
+from worker_reminder.config import _load_env_file, _parse_env_line
 
 
 @pytest.mark.parametrize("line,expected", [

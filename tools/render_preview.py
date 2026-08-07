@@ -20,11 +20,11 @@ sys.path.insert(0, str(PROJECT_ROOT))
 
 from PIL import Image  # noqa: E402
 
-from laborer_reminder.holidays import footer_text, year_progress_dots  # noqa: E402
-from laborer_reminder.image_utils import pick_meme_src, process_meme  # noqa: E402
-from laborer_reminder.render_card import CARD_H, CARD_W, render_card_png  # noqa: E402
-from laborer_reminder.slogans import slogan_for, weekday_name  # noqa: E402
-from laborer_reminder.timeutil import beijing_today  # noqa: E402
+from worker_reminder.holidays import footer_text, year_progress_dots  # noqa: E402
+from worker_reminder.image_utils import pick_meme_src, process_meme  # noqa: E402
+from worker_reminder.render_card import CARD_H, CARD_W, render_card_png  # noqa: E402
+from worker_reminder.slogans import slogan_for, weekday_name  # noqa: E402
+from worker_reminder.timeutil import beijing_today  # noqa: E402
 
 SCALE = 1  # 默认设备原生分辨率 296×152；--scale 4 可放大查看
 OUT_DIR = PROJECT_ROOT / "preview"
@@ -58,7 +58,7 @@ def render_treatment_compare(weekday: int = 0, meme_mode: str = "random") -> Non
     strip = Image.new("L", (total, cell + 30), 255)
     from PIL import ImageDraw, ImageFont
 
-    from laborer_reminder.render_card import load_font
+    from worker_reminder.render_card import load_font
     draw = ImageDraw.Draw(strip)
     font = load_font(20)
     for i, (t, label) in enumerate(zip(("fs", "bw", "4level"), labels)):

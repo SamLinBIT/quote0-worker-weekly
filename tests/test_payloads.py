@@ -12,11 +12,11 @@ from pathlib import Path
 
 import pytest
 
-from laborer_reminder.config import Config
-from laborer_reminder.holidays import footer_text, year_progress_dots
-from laborer_reminder.layout import build_canvas_payload, build_image_payload
-from laborer_reminder.main import _push
-from laborer_reminder.slogans import DAY_PHRASES, WEEKDAY_NAMES, slogan_for
+from worker_reminder.config import Config
+from worker_reminder.holidays import footer_text, year_progress_dots
+from worker_reminder.layout import build_canvas_payload, build_image_payload
+from worker_reminder.main import _push
+from worker_reminder.slogans import DAY_PHRASES, WEEKDAY_NAMES, slogan_for
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 FIXED_MEME = PROJECT_ROOT / "pic" / "周一.GIF"
@@ -57,9 +57,9 @@ def test_error_payload_is_canvas_dsl() -> None:
 
 def test_push_image_payload_goes_to_push_image(monkeypatch) -> None:
     calls: list[str] = []
-    monkeypatch.setattr("laborer_reminder.main.push_image",
+    monkeypatch.setattr("worker_reminder.main.push_image",
                         lambda *a: calls.append("image") or "ok")
-    monkeypatch.setattr("laborer_reminder.main.push_canvas",
+    monkeypatch.setattr("worker_reminder.main.push_canvas",
                         lambda *a: calls.append("canvas") or "ok")
     payload = build_image_payload(png_data_uri="data:image/png;base64,AAAA")
     assert _push(payload, _CFG) == 0
@@ -73,9 +73,9 @@ def test_push_image_payload_goes_to_push_image(monkeypatch) -> None:
 ])
 def test_canvas_payload_goes_to_push_canvas(monkeypatch, payload) -> None:
     calls: list[str] = []
-    monkeypatch.setattr("laborer_reminder.main.push_image",
+    monkeypatch.setattr("worker_reminder.main.push_image",
                         lambda *a: calls.append("image") or "ok")
-    monkeypatch.setattr("laborer_reminder.main.push_canvas",
+    monkeypatch.setattr("worker_reminder.main.push_canvas",
                         lambda *a: calls.append("canvas") or "ok")
     assert _push(payload, _CFG) == 0
     assert calls == ["canvas"]
@@ -111,7 +111,7 @@ def test_footer_text_today_is_holiday() -> None:
 
 def test_holiday_dates_match_state_council_2026() -> None:
     # 口径=放假第一天，与国办发明电〔2025〕7号一致：春节 2/15（非正月初一 2/17）、清明 4/4（非 4/5）
-    from laborer_reminder.holidays import FESTIVALS
+    from worker_reminder.holidays import FESTIVALS
 
     assert dict(FESTIVALS[2026]) == {"春节": (2, 15), "清明": (4, 4),
                                      "端午": (6, 19), "中秋": (9, 25)}
@@ -120,14 +120,14 @@ def test_holiday_dates_match_state_council_2026() -> None:
 
 def test_fixed_solar_holidays_auto_generated() -> None:
     # 元旦/劳动节/国庆 固定公历节日无需入表，2026 表里没有也要能倒计时
-    from laborer_reminder.holidays import FESTIVALS
+    from worker_reminder.holidays import FESTIVALS
 
     assert ("劳动节", (5, 1)) not in FESTIVALS[2026]
     assert footer_text(date(2026, 5, 1)) == "2026-05-01 · 今天劳动节!"
 
 
 def test_holidays_table_sorted_and_valid() -> None:
-    from laborer_reminder import holidays
+    from worker_reminder import holidays
 
     for year, entries in holidays.FESTIVALS.items():
         for name, (month, day) in entries:
@@ -138,7 +138,7 @@ def test_holidays_table_sorted_and_valid() -> None:
 
 
 def test_next_holiday_cross_year_missing_table(monkeypatch, capsys) -> None:
-    from laborer_reminder import holidays
+    from worker_reminder import holidays
 
     monkeypatch.setattr(holidays, "_warned_missing_year", False)
     # 2026 年内手工节日已过完 → 固定节日元旦顶上；2027 无手工表 → 告警一次
@@ -156,7 +156,7 @@ def test_next_holiday_without_manual_table() -> None:
 
 def test_next_holiday_after_last_holiday_within_year() -> None:
     # 国庆后 → 下一年元旦顶上（10/2 → 2027-01-01 共 91 天）
-    from laborer_reminder.holidays import next_holiday
+    from worker_reminder.holidays import next_holiday
 
     assert next_holiday(date(2026, 10, 2)) == ("元旦", 91)
 
@@ -165,7 +165,7 @@ def test_next_holiday_after_last_holiday_within_year() -> None:
 
 @pytest.mark.skipif(not HAS_MEME, reason="pic/周一.GIF 素材缺失")
 def test_process_meme_bw_is_strict_binary() -> None:
-    from laborer_reminder.image_utils import process_meme
+    from worker_reminder.image_utils import process_meme
 
     im = process_meme(FIXED_MEME, treatment="bw")
     assert set(im.tobytes()) <= {0, 255}
@@ -173,7 +173,7 @@ def test_process_meme_bw_is_strict_binary() -> None:
 
 @pytest.mark.skipif(not HAS_MEME, reason="pic/周一.GIF 素材缺失")
 def test_process_meme_4level_differs_from_bw() -> None:
-    from laborer_reminder.image_utils import process_meme
+    from worker_reminder.image_utils import process_meme
 
     bw = process_meme(FIXED_MEME, treatment="bw")
     four = process_meme(FIXED_MEME, treatment="4level")

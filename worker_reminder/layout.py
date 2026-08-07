@@ -57,7 +57,7 @@ def build_canvas_payload(
     footer: str = "",
     error_message: str | None = None,
 ) -> dict[str, Any]:
-    """Build the complete Canvas API request payload for a laborer card.
+    """Build the complete Canvas API request payload for a worker card.
 
     line1/line2: 两行大字；meme_uri: 表情包 data URI；
     dots: 12 个月进度圆点；progress_label: 顶部标签；footer: 底部信息行。

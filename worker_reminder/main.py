@@ -1,12 +1,12 @@
 """打工人周历 CLI 编排入口.
 
 用法:
-    uv run python -m laborer_reminder.main               # 推送当天卡片（默认 Image API 整卡 PNG）
-    uv run python -m laborer_reminder.main --api canvas  # 用 Canvas API DSL
-    uv run python -m laborer_reminder.main --day 周一    # 指定周几（调试）
-    uv run python -m laborer_reminder.main --meme-mode fixed  # 表情包固定单日文件（默认分组随机）
-    uv run python -m laborer_reminder.main --dry-run     # 只打印 payload 不推送
-    uv run python -m laborer_reminder.main --preview     # 渲染设计样式预览图
+    uv run python -m worker_reminder.main               # 推送当天卡片（默认 Image API 整卡 PNG）
+    uv run python -m worker_reminder.main --api canvas  # 用 Canvas API DSL
+    uv run python -m worker_reminder.main --day 周一    # 指定周几（调试）
+    uv run python -m worker_reminder.main --meme-mode fixed  # 表情包固定单日文件（默认分组随机）
+    uv run python -m worker_reminder.main --dry-run     # 只打印 payload 不推送
+    uv run python -m worker_reminder.main --preview     # 渲染设计样式预览图
 """
 
 from __future__ import annotations

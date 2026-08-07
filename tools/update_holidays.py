@@ -27,7 +27,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(PROJECT_ROOT))
 
-from laborer_reminder import holidays  # noqa: E402
+from worker_reminder import holidays  # noqa: E402
 
 # 需维护的节日（按国务院公告补填），与 FESTIVALS 注释一致
 _MANUAL_FESTIVALS = ("春节", "清明", "端午", "中秋")
@@ -45,7 +45,7 @@ _FIXED_SOLAR_STARTS = {"元旦": (1, 1), "劳动节": (5, 1), "国庆节": (10, 
 
 _CDN_URL = "https://fastly.jsdelivr.net/gh/NateScarlet/holiday-cn@master/{year}.json"
 
-_HOLIDAYS_PY = PROJECT_ROOT / "laborer_reminder" / "holidays.py"
+_HOLIDAYS_PY = PROJECT_ROOT / "worker_reminder" / "holidays.py"
 
 
 def _validate() -> int:

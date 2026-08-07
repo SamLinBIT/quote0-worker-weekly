@@ -7,7 +7,7 @@ import urllib.error
 
 import pytest
 
-from laborer_reminder import dot_push
+from worker_reminder import dot_push
 
 
 class _FakeResp:
@@ -39,7 +39,7 @@ def test_post_retries_5xx_then_success(monkeypatch) -> None:
             raise _http_error(req.full_url, 503, b'{"message":"server busy"}')
         return _FakeResp(200, b'{"message":"ok"}')
 
-    monkeypatch.setattr("laborer_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
+    monkeypatch.setattr("worker_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
     assert dot_push._post("http://x/1", "k", {}, "test") == "ok"
     assert len(calls) == 3
 
@@ -50,7 +50,7 @@ def test_post_5xx_exhausted_raises(monkeypatch) -> None:
     def fake_urlopen(req, timeout=0, context=None):
         raise _http_error(req.full_url, 500, b'{"message":"boom"}')
 
-    monkeypatch.setattr("laborer_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
+    monkeypatch.setattr("worker_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
     with pytest.raises(dot_push.DotPushError, match="500"):
         dot_push._post("http://x/1", "k", {}, "test")
 
@@ -61,7 +61,7 @@ def test_post_network_error_exhausted_raises(monkeypatch) -> None:
     def fake_urlopen(req, timeout=0, context=None):
         raise urllib.error.URLError("connection refused")
 
-    monkeypatch.setattr("laborer_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
+    monkeypatch.setattr("worker_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
     with pytest.raises(dot_push.DotPushError, match="Network error"):
         dot_push._post("http://x/1", "k", {}, "test")
 
@@ -79,14 +79,14 @@ def test_post_client_errors_raise_without_retry(monkeypatch, status, exc) -> Non
         calls.append(1)
         raise _http_error(req.full_url, status, b'{"message":"client err"}')
 
-    monkeypatch.setattr("laborer_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
+    monkeypatch.setattr("worker_reminder.dot_push.urllib.request.urlopen", fake_urlopen)
     with pytest.raises(exc):
         dot_push._post("http://x/1", "k", {}, "test")
     assert len(calls) == 1  # 客户端错误不重试
 
 
 def test_post_success_message_extraction(monkeypatch) -> None:
-    monkeypatch.setattr("laborer_reminder.dot_push.urllib.request.urlopen",
+    monkeypatch.setattr("worker_reminder.dot_push.urllib.request.urlopen",
                         lambda *a, **k: _FakeResp(200, b'{"message":"pushed"}'))
     assert dot_push._post("http://x/1", "k", {}, "test") == "pushed"
 

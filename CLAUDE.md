@@ -28,13 +28,13 @@ image_utils.py ──────┼─> render_card.py (整卡 PNG) ───�
 ## 常见操作
 
 ```bash
-uv run python -m laborer_reminder.main --dry-run --day 周一   # 看 payload
-uv run python -m laborer_reminder.main --api image --dry-run  # 看 Image 模式
-uv run python -m laborer_reminder.main --meme-mode fixed --dry-run  # 固定单日表情包
+uv run python -m worker_reminder.main --dry-run --day 周一   # 看 payload
+uv run python -m worker_reminder.main --api image --dry-run  # 看 Image 模式
+uv run python -m worker_reminder.main --meme-mode fixed --dry-run  # 固定单日表情包
 uv run python tools/render_preview.py --scale 4               # 放大预览
 uv run python tools/update_holidays.py                        # 假期表校验 + 生成下一年骨架
 uv run python tools/update_holidays.py --fetch --apply        # 抓取国务院安排并写入（每年 11 月公告后跑）
-./run_laborer_reminder.sh                                     # 手动跑一次（写日志）
+./run_worker_reminder.sh                                     # 手动跑一次（写日志）
 ```
 
 ## 注意事项

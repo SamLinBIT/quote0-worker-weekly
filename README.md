@@ -4,7 +4,7 @@
 
 ![周五卡片示例（2 倍放大，实际为 296×152 黑白）](docs/card-friday.png)
 
-三段式：顶部 12 个月进度圆点（实心=已过含当前月）→ 中部表情包 + 两行大字 → 底部日期与下一个法定假期倒计时。假期表在 `laborer_reminder/holidays.py`，按国务院安排每年维护。
+三段式：顶部 12 个月进度圆点（实心=已过含当前月）→ 中部表情包 + 两行大字 → 底部日期与下一个法定假期倒计时。假期表在 `worker_reminder/holidays.py`，按国务院安排每年维护。
 
 ## 文案
 
@@ -46,19 +46,19 @@ cp .env.example .env   # 填入 DOT_API_KEY / DOT_DEVICE_ID；运行时会自动
 uv run python tools/render_preview.py
 
 # 5. 推送（默认推当天 + Image API 整卡）
-uv run python -m laborer_reminder.main
+uv run python -m worker_reminder.main
 ```
 
 ## 用法
 
 ```bash
-uv run python -m laborer_reminder.main                # 推当天卡片（Image API，默认）
-uv run python -m laborer_reminder.main --api canvas   # Canvas API DSL
-uv run python -m laborer_reminder.main --day 周一     # 指定周几（调试用）
-uv run python -m laborer_reminder.main --treatment fs # 表情包抖动处理（默认 bw 硬阈值）
-uv run python -m laborer_reminder.main --meme-mode fixed  # 表情包固定单日文件（默认分组随机）
-uv run python -m laborer_reminder.main --dry-run      # 只打印 payload 不推送
-uv run python -m laborer_reminder.main --preview      # 渲染预览图
+uv run python -m worker_reminder.main                # 推当天卡片（Image API，默认）
+uv run python -m worker_reminder.main --api canvas   # Canvas API DSL
+uv run python -m worker_reminder.main --day 周一     # 指定周几（调试用）
+uv run python -m worker_reminder.main --treatment fs # 表情包抖动处理（默认 bw 硬阈值）
+uv run python -m worker_reminder.main --meme-mode fixed  # 表情包固定单日文件（默认分组随机）
+uv run python -m worker_reminder.main --dry-run      # 只打印 payload 不推送
+uv run python -m worker_reminder.main --preview      # 渲染预览图
 ```
 
 ## 定时任务（cron）
@@ -66,17 +66,17 @@ uv run python -m laborer_reminder.main --preview      # 渲染预览图
 已安装到用户 crontab（系统时区 UTC）：
 
 ```
-5 23 * * * <项目路径>/run_laborer_reminder.sh
+5 23 * * * <项目路径>/run_worker_reminder.sh
 ```
 
-= 每天 **7:05 北京时间**推送（wrapper 内 `export TZ='Asia/Shanghai'`，周几取北京时间；代码内也统一用 `Asia/Shanghai` 取日期，直接运行不会受系统时区影响）。日志按日轮转在 `logs/laborer_<日期>.log`，另有 `flock` 防止手动与定时任务重叠重复推送。
+= 每天 **7:05 北京时间**推送（wrapper 内 `export TZ='Asia/Shanghai'`，周几取北京时间；代码内也统一用 `Asia/Shanghai` 取日期，直接运行不会受系统时区影响）。日志按日轮转在 `logs/worker_<日期>.log`，另有 `flock` 防止手动与定时任务重叠重复推送。
 
 ## 目录结构
 
 ```
 ├── pyproject.toml            # uv 项目（Pillow 依赖）
-├── run_laborer_reminder.sh   # cron 入口 wrapper
-├── laborer_reminder/
+├── run_worker_reminder.sh   # cron 入口 wrapper
+├── worker_reminder/
 │   ├── slogans.py            # 文案表（A/B 变体）
 │   ├── image_utils.py        # 表情包管线：GIF→黑白二值 PNG
 │   ├── render_card.py        # 整卡 296×152 渲染（Image 模式+预览共用）
