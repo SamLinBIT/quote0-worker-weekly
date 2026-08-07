@@ -18,21 +18,46 @@ PUSH_MODES = ("canvas", "image")
 MEME_MODES = ("fixed", "random")
 
 
+def _parse_env_line(line: str) -> tuple[str, str] | None:
+    """解析一行 `KEY=VALUE`：支持 `export` 前缀、行尾 `# 注释`（引号内除外）。
+
+    不做变量展开；返回 (key, value) 或 None（注释/空行/格式非法）。
+    """
+    line = line.strip()
+    if not line or line.startswith("#"):
+        return None
+    if line.startswith("export "):
+        line = line[7:].lstrip()
+    if "=" not in line:
+        return None
+
+    key, _, value = line.partition("=")
+    key = key.strip()
+    if not key:
+        return None
+
+    value = value.strip()
+    if value and value[0] in "\"'" :
+        quote = value[0]
+        end = value.find(quote, 1)  # 引号内视为字面值，注释不生效
+        return key, value[1:end] if end != -1 else value[1:]
+    value = value.split(" #", 1)[0].split("\t#", 1)[0].rstrip()
+    return key, value.strip()
+
+
 def _load_env_file(env_path: Path = ENV_PATH) -> None:
     """把 .env 的 KEY=VALUE 读入 os.environ（不覆盖已存在的变量）。
 
-    支持 `#` 注释行、空行、值两侧的引号；不做变量展开/行内注释解析。
+    支持 `export` 前缀、行尾注释；不做变量展开。
     """
     if not env_path.is_file():
         return
     for raw in env_path.read_text(encoding="utf-8").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#") or "=" not in line:
+        parsed = _parse_env_line(raw)
+        if parsed is None:
             continue
-        key, _, value = line.partition("=")
-        key = key.strip()
-        value = value.strip().strip("\"'")
-        if key and key not in os.environ:
+        key, value = parsed
+        if key not in os.environ:
             os.environ[key] = value
 
 

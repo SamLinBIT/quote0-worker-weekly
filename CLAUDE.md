@@ -32,11 +32,14 @@ uv run python -m laborer_reminder.main --dry-run --day 周一   # 看 payload
 uv run python -m laborer_reminder.main --api image --dry-run  # 看 Image 模式
 uv run python -m laborer_reminder.main --meme-mode fixed --dry-run  # 固定单日表情包
 uv run python tools/render_preview.py --scale 4               # 放大预览
+uv run python tools/update_holidays.py                        # 假期表校验 + 生成下一年骨架
+uv run python tools/update_holidays.py --fetch --apply        # 抓取国务院安排并写入（每年 11 月公告后跑）
 ./run_laborer_reminder.sh                                     # 手动跑一次（写日志）
 ```
 
 ## 注意事项
 
+- 假期以国务院安排为准：`holidays.py` FESTIVALS 只维护春节/清明/端午/中秋（元旦/劳动节/国庆自动生成，口径=放假第一天）；跨年后用 `tools/update_holidays.py --fetch --apply` 从 holiday-cn（自动每日抓国务院公告，MIT）抓取写入，或 `--fetch` 不带 `--apply` 只打印核对。
 - `.env` 有真实密钥（DOT_API_KEY/DOT_DEVICE_ID），勿提交/勿外传；PUSH_MODE / TREATMENT 也在里面。
 - `taskAlias` 为"打工人周历"，与参考项目的 "DeepSeek Balance" 区分。
 - 改布局时同时改 `render_card.py`（Pillow 坐标）和 `layout.py`（tailwind 类），再 `--dry-run` 验证。

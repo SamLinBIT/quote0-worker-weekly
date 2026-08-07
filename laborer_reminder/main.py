@@ -78,6 +78,11 @@ def _build_and_push(args, config) -> int:
     treatment = args.treatment or config.treatment
     meme_mode = args.meme_mode or config.meme_mode
     mode = args.api or config.push_mode
+    if mode == "image" and treatment == "4level":
+        # 4level 是预览对比专用灰阶，Image API + ditherType NONE 推到 1-bit
+        # 设备会渲染异常，推送场景强制回退 bw
+        print(f"[WARN] image 模式不支持 treatment=4level（仅预览用），已回退 bw")
+        treatment = "bw"
     line1, line2 = slogan_for(weekday)
     name = weekday_name(weekday)
     dots = year_progress_dots(today)

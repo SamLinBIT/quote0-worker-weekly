@@ -109,6 +109,58 @@ def test_footer_text_today_is_holiday() -> None:
     assert footer_text(date(2026, 1, 1)) == "2026-01-01 · 今天元旦!"
 
 
+def test_holiday_dates_match_state_council_2026() -> None:
+    # 口径=放假第一天，与国办发明电〔2025〕7号一致：春节 2/15（非正月初一 2/17）、清明 4/4（非 4/5）
+    from laborer_reminder.holidays import FESTIVALS
+
+    assert dict(FESTIVALS[2026]) == {"春节": (2, 15), "清明": (4, 4),
+                                     "端午": (6, 19), "中秋": (9, 25)}
+    assert footer_text(date(2026, 2, 10)) == "2026-02-10 · 距春节还有5天"
+
+
+def test_fixed_solar_holidays_auto_generated() -> None:
+    # 元旦/劳动节/国庆 固定公历节日无需入表，2026 表里没有也要能倒计时
+    from laborer_reminder.holidays import FESTIVALS
+
+    assert ("劳动节", (5, 1)) not in FESTIVALS[2026]
+    assert footer_text(date(2026, 5, 1)) == "2026-05-01 · 今天劳动节!"
+
+
+def test_holidays_table_sorted_and_valid() -> None:
+    from laborer_reminder import holidays
+
+    for year, entries in holidays.FESTIVALS.items():
+        for name, (month, day) in entries:
+            date(year, month, day)  # 非法日期会抛 ValueError
+        dates = [d for _, d in entries]
+        assert dates == sorted(dates), f"{year} 未按日期升序"
+        assert len(dates) == len(set(dates)), f"{year} 有重复日期"
+
+
+def test_next_holiday_cross_year_missing_table(monkeypatch, capsys) -> None:
+    from laborer_reminder import holidays
+
+    monkeypatch.setattr(holidays, "_warned_missing_year", False)
+    # 2026 年内手工节日已过完 → 固定节日元旦顶上；2027 无手工表 → 告警一次
+    assert holidays.next_holiday(date(2026, 12, 31)) == ("元旦", 1)
+    assert footer_text(date(2026, 12, 31)) == "2026-12-31 · 距元旦还有1天"
+    out = capsys.readouterr().out
+    assert "缺少 2027" in out
+    assert "WARN" in out
+
+
+def test_next_holiday_without_manual_table() -> None:
+    # 2027 只有固定节日：1/2 → 下一个是劳动节
+    assert footer_text(date(2027, 1, 2)) == "2027-01-02 · 距劳动节还有119天"
+
+
+def test_next_holiday_after_last_holiday_within_year() -> None:
+    # 国庆后 → 下一年元旦顶上（10/2 → 2027-01-01 共 91 天）
+    from laborer_reminder.holidays import next_holiday
+
+    assert next_holiday(date(2026, 10, 2)) == ("元旦", 91)
+
+
 # --- 二值化 -----------------------------------------------------------
 
 @pytest.mark.skipif(not HAS_MEME, reason="pic/周一.GIF 素材缺失")

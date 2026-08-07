@@ -7,10 +7,15 @@ wrapper 里的 export TZ 保留作兜底。
 
 from __future__ import annotations
 
-from datetime import date, datetime
-from zoneinfo import ZoneInfo
+from datetime import date, datetime, timedelta, timezone
 
-_BEIJING = ZoneInfo("Asia/Shanghai")
+try:
+    from zoneinfo import ZoneInfo
+
+    _BEIJING = ZoneInfo("Asia/Shanghai")
+except (ImportError, ModuleNotFoundError):
+    # 容器缺 tzdata 时降级为固定 UTC+8（北京无夏令时，结果一致）
+    _BEIJING = timezone(timedelta(hours=8), name="Asia/Shanghai")
 
 
 def beijing_today() -> date:
