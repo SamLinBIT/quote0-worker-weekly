@@ -1,0 +1,20 @@
+[project]
+name = "laborer-weekly-reminder"
+version = "0.1.0"
+description = "打工人每周提醒 — MindReset Dot Quote/0 e-ink daily card"
+requires-python = ">=3.10"
+dependencies = ["pillow>=10.0.0"]
+
+# 纯脚本项目（package=false），不打包，故无 [build-system]
+
+[tool.uv]
+package = false      # 纯脚本模式：uv run 只装依赖不打包
+
+[tool.pytest.ini_options]
+pythonpath = ["."]   # package=false 下项目根不进 sys.path，pytest 需手动加
+testpaths = ["tests"]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+]
