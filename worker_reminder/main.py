@@ -156,7 +156,7 @@ def main() -> int:
         sys.path.insert(0, str(PROJECT_ROOT / "tools"))
         from render_preview import main as preview_main
 
-        # render_preview 的 parser 不认识 --preview，剥掉后再转发其余参数（如 --scale 4）
+        # render_preview 的 parser 不认识 --preview，剥掉后再转发其余参数
         sys.argv = [a for a in sys.argv if a != "--preview"]
         return preview_main()
 

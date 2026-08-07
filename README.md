@@ -42,7 +42,7 @@ uv sync
 # 3. 配置密钥（从 Dot. App 获取）
 cp .env.example .env   # 填入 DOT_API_KEY / DOT_DEVICE_ID；运行时会自动读取，无需手动 export
 
-# 4. 渲染设计样式预览图（输出 preview/，--scale 4 可放大查看）
+# 4. 渲染设计样式预览图（输出 preview/，296×152 设备原生分辨率）
 uv run python tools/render_preview.py
 
 # 5. 推送（默认推当天 + Image API 整卡）

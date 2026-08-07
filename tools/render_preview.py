@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""渲染 7 张设计样式预览图（4× 放大）+ 周一三种二值化 treatment 对比图.
+"""渲染 7 张设计样式预览图（296×152 设备原生分辨率）+ 周一三种二值化 treatment 对比图.
 
 用法:
     uv run python tools/render_preview.py                # 全部默认
     uv run python tools/render_preview.py --treatment bw # 硬阈值处理
     uv run python tools/render_preview.py --meme-mode fixed  # 表情包固定单日文件（默认分组随机）
-    uv run python tools/render_preview.py --scale 4      # 放大 4× 查看（默认 1×=屏幕分辨率）
-输出: preview/周一.png ~ 周日.png（默认 296×152 设备分辨率）; preview/_对比_周一.png
+输出: preview/周一.png ~ 周日.png（296×152 设备分辨率）; preview/_对比_周一.png
 """
 
 from __future__ import annotations
@@ -26,7 +25,7 @@ from worker_reminder.render_card import CARD_H, CARD_W, render_card_png  # noqa:
 from worker_reminder.slogans import slogan_for, weekday_name  # noqa: E402
 from worker_reminder.timeutil import beijing_today  # noqa: E402
 
-SCALE = 1  # 默认设备原生分辨率 296×152；--scale 4 可放大查看
+SCALE = 1  # 设备原生分辨率 296×152
 OUT_DIR = PROJECT_ROOT / "preview"
 PIC_DIR = PROJECT_ROOT / "pic"
 
