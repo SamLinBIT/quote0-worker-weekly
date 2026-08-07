@@ -1,6 +1,6 @@
 # CLAUDE.md — quote0-worker-weekly
 
-打工人周历：每天 7:05 北京时间向 MindReset Dot Quote/0（296×152 黑白墨水屏）推送当日卡片。
+打工人周历：每天 7:30 北京时间向 MindReset Dot Quote/0（296×152 黑白墨水屏）推送当日卡片。
 
 ## 架构
 
@@ -23,7 +23,7 @@ image_utils.py ──────┼─> render_card.py (整卡 PNG) ───�
 - **uv 管理**（Python 3.12 + Pillow），命令统一 `uv run python ...`。
 - 系统 python 3.8.10 太老；cron 的 PATH 里 `~/.local/bin` 已有 uv。
 - 系统无中文字体，一切本地中文渲染必须用 `fonts/ChillKSans.otf`。
-- cron：用户 crontab 里 `5 23 * * *`（UTC）= 北京 7:05，wrapper `export TZ='Asia/Shanghai'` 生效后 `date.today().weekday()` 取北京周几。与参考项目 23:55/1:55/3:55/5:55/8:25/15:55 UTC 不冲突。
+- cron：用户 crontab 里 `30 23 * * *`（UTC）= 北京 7:30，wrapper `export TZ='Asia/Shanghai'` 生效后 `date.today().weekday()` 取北京周几。与参考项目 23:55/1:55/3:55/5:55/8:25/15:55 UTC 不冲突。
 
 ## 常见操作
 
